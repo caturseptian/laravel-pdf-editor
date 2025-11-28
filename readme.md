@@ -1,3 +1,73 @@
+# Laravel PDF Editor (QR or PNG Stamping)
+
+Single page PDF editor built with Laravel 5.6 and PHP 7.3.
+
+Flow:
+1. User uploads a PDF.
+2. PDF is previewed on the same page with pagination.
+3. User generates a QR code or uploads a PNG.
+4. User drags and resizes the QR or PNG on any page.
+5. User saves and downloads the final stamped PDF.
+
+## Features
+- Upload PDF on one page
+- PDF preview with Prev and Next pagination
+- Generate QR code (PNG)
+- Upload custom PNG
+- Drag, drop, resize stamps on preview
+- Export final multi page PDF with embedded stamps
+
+## Tech Stack
+- Laravel 5.6
+- PHP 7.3
+- PDF.js for rendering preview
+- Interact.js for drag and resize
+- FPDI + TCPDF for stamping and exporting
+- Simple QrCode for QR generation
+
+## Requirements
+- PHP 7.3
+- Composer
+- Laravel 5.6 compatible environment
+- GD or Imagick (for PNG handling, standard PHP install usually OK)
+
+## Installation
+Clone repo and install dependencies:
+
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+```
+
+Create public storage symlink:
+```bash
+php artisan storage:link
+```
+
+Create required folders:
+```bash
+mkdir -p storage/app/public/pdfs
+mkdir -p storage/app/public/stamps
+mkdir -p storage/app/public/finals
+```
+
+Fix permissions:
+```bash
+chmod -R 775 storage bootstrap/cache
+```
+
+Routes
+```bash
+Route::get('/pdf-editor', 'PdfEditorController@index')->name('pdf.editor');
+Route::post('/pdf-editor/upload', 'PdfEditorController@uploadPdf')->name('pdf.upload');
+Route::post('/pdf-editor/upload-image', 'PdfEditorController@uploadImage')->name('image.upload');
+Route::post('/pdf-editor/generate-qr', 'PdfEditorController@generateQr')->name('qr.generate');
+Route::post('/pdf-editor/save', 'PdfEditorController@save')->name('pdf.save');
+Route::get('/pdf-editor/download/{file}', 'PdfEditorController@download')->name('pdf.download');
+```
+
+
 <p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
 
 <p align="center">
